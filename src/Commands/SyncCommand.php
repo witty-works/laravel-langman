@@ -118,8 +118,13 @@ class SyncCommand extends Command
     {
         $missingKeys = [];
 
+        $missingValue = '';
         foreach ($foundMissingKeys as $missingKey) {
-            $missingKeys[$missingKey] = [$languageKey => ''];
+            if (config('langman.missing_from_key')) {
+                $missingValue = str_replace(['.', '_', '-'], [' ', ' ', ' '], $missingKey);
+            }
+
+            $missingKeys[$missingKey] = [$languageKey => $missingValue];
 
             $this->output->writeln("\"<fg=yellow>{$fileName}.{$missingKey}.{$languageKey}</>\" was added.");
         }
