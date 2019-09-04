@@ -39,6 +39,21 @@ return [
 
     /*
      * --------------------------------------------------------------------------
+     * Target language
+     * --------------------------------------------------------------------------
+     *
+     * This option determines if missing translations should only be added for the
+     * target language.
+     *
+     * The default setting of null means that missing translations should be added
+     * to all languages. Setting this to a string locale, defines to limit to that
+     * specific language.
+     */
+
+    'target_language' => null,
+
+    /*
+     * --------------------------------------------------------------------------
      * Missing default text behavior
      * --------------------------------------------------------------------------
      *

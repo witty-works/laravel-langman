@@ -38,17 +38,26 @@ class Manager
      */
     private $functions;
 
+    /**
+     * Optionally limit for which languages missing translations are added
+     *
+     * @var string
+     */
+    private $targetLanguage;
+
+    /**
      * Manager constructor.
      *
      * @param Filesystem $disk
      * @param string $path
      */
-    public function __construct(Filesystem $disk, $path, array $syncPaths, array $functions)
+    public function __construct(Filesystem $disk, $path, array $syncPaths, array $functions, string $targetLanguage = null)
     {
         $this->disk = $disk;
         $this->path = $path;
         $this->syncPaths = $syncPaths;
         $this->functions = $functions;
+        $this->targetLanguage = $targetLanguage;
     }
 
     /**
@@ -60,8 +69,11 @@ class Manager
      */
     public function files()
     {
-        $files = Collection::make($this->disk->allFiles($this->path))->filter(function ($file) {
-            return $this->disk->extension($file) == 'php';
+        $languages = $this->languages();
+
+        $files = Collection::make($this->disk->allFiles($this->path))->filter(function ($file) use ($languages) {
+            return in_array($this->disk->basename($this->disk->dirname($file)), $languages)
+                && $this->disk->extension($file) == 'php';
         });
 
         $filesByFile = $files->groupBy(function ($file) {
@@ -114,7 +126,7 @@ class Manager
     }
 
     /**
-     * Array of supported languages.
+     * Array of supported languages or the target language if set
      *
      * ex: ['en', 'sp']
      *
@@ -122,6 +134,10 @@ class Manager
      */
     public function languages()
     {
+        if ($this->targetLanguage !== null) {
+            return [$this->targetLanguage];
+        }
+
         $languages = array_map(function ($directory) {
             return basename($directory);
         }, $this->disk->directories($this->path));
