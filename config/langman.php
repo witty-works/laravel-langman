@@ -27,6 +27,18 @@ return [
 
     /*
      * --------------------------------------------------------------------------
+     * Functions to look for
+     * --------------------------------------------------------------------------
+     *
+     * This pattern is derived from Barryvdh\TranslationManager by Barry vd. Heuvel <barryvdh@gmail.com>
+     *
+     * https://github.com/barryvdh/laravel-translation-manager/blob/master/src/Manager.php
+     */
+
+    'functions' => ['__', 'trans', 'trans_choice', 'Lang::get', 'Lang::choice', 'Lang::trans', 'Lang::transChoice', '@lang', '@choice'],
+
+    /*
+     * --------------------------------------------------------------------------
      * Missing default text behavior
      * --------------------------------------------------------------------------
      *

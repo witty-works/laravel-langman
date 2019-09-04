@@ -32,16 +32,23 @@ class Manager
     private $syncPaths;
 
     /**
+     * The translation functions to search for
+     *
+     * @var array
+     */
+    private $functions;
+
      * Manager constructor.
      *
      * @param Filesystem $disk
      * @param string $path
      */
-    public function __construct(Filesystem $disk, $path, array $syncPaths)
+    public function __construct(Filesystem $disk, $path, array $syncPaths, array $functions)
     {
         $this->disk = $disk;
         $this->path = $path;
         $this->syncPaths = $syncPaths;
+        $this->functions = $functions;
     }
 
     /**
@@ -303,18 +310,11 @@ class Manager
      */
     public function getAllViewFilesWithTranslations()
     {
-        /*
-         * This pattern is derived from Barryvdh\TranslationManager by Barry vd. Heuvel <barryvdh@gmail.com>
-         *
-         * https://github.com/barryvdh/laravel-translation-manager/blob/master/src/Manager.php
-         */
-        $functions = ['__', 'trans', 'trans_choice', 'Lang::get', 'Lang::choice', 'Lang::trans', 'Lang::transChoice', '@lang', '@choice'];
-
         $pattern =
             // See https://regex101.com/r/jS5fX0/4
             '[^\w]'. // Must not start with any alphanum or _
             '(?<!->)'. // Must not start with ->
-            '('.implode('|', $functions).')'.// Must start with one of the functions
+            '('.implode('|', $this->functions).')'.// Must start with one of the functions
             "\(".// Match opening parentheses
             "[\'\"]".// Match " or '
             '('.// Start a new group to match:
