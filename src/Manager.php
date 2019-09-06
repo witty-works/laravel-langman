@@ -246,6 +246,7 @@ class Manager
         $output = '';
 
         foreach ($array as $key => $value) {
+            $key = str_replace("'", "\'", $key);
             if (is_array($value)) {
                 $value = $this->stringLineMaker($value, $prepend.'    ');
 
