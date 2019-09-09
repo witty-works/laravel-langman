@@ -27,7 +27,7 @@ class LangmanServiceProvider extends ServiceProvider
                 $this->app['config']['langman.path'],
                 array_merge($this->app['config']['langman.code_paths'], $this->app['config']['view.paths'], [$this->app['path']]),
                 $this->app['config']['langman.functions'],
-                $this->app['config']['langman.target_language'],
+                $this->app['config']['langman.target_language']
             );
         });
 
