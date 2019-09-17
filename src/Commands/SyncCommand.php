@@ -116,10 +116,15 @@ class SyncCommand extends Command
      */
     private function fillMissingKeys($fileName, array $foundMissingKeys, $languageKey)
     {
+        $ignoreKeys = config('langman.ignore_keys');
         $missingKeys = [];
 
         $missingValue = '';
         foreach ($foundMissingKeys as $missingKey) {
+            if (in_array($missingKey, $ignoreKeys)) {
+                continue;
+            }
+
             if (config('langman.missing_from_key')) {
                 $missingValue = str_replace(['.', '_', '-'], [' ', ' ', ' '], $missingKey);
             }
